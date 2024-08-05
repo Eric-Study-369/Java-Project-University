@@ -5,11 +5,12 @@
         <group>
             <file>file:/F:/Years%202/Managemnt_System/src/connection/DatabaseConnection.java</file>
             <file>file:/F:/Years%202/Managemnt_System/src/main/Create.java</file>
-            <file>file:/F:/Years%202/Managemnt_System/src/Services/ServiceEmployee.java</file>
-            <file>file:/F:/Years%202/Managemnt_System/src/Services/ServicePositions.java</file>
+            <file>file:/F:/Years%202/Managemnt_System/src/main/test.java</file>
+            <file>file:/F:/Years%202/Managemnt_System/src/model/ModelUser.java</file>
             <file>file:/F:/Years%202/Managemnt_System/src/main/Main.java</file>
             <file>file:/F:/Years%202/Managemnt_System/src/model/ModelPositions.java</file>
             <file>file:/F:/Years%202/Managemnt_System/src/model/ModelEmployee.java</file>
+            <file>file:/F:/Years%202/Managemnt_System/src/model/ModelMessage.java</file>
         </group>
     </open-files>
 </project-private>
