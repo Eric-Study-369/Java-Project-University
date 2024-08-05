@@ -93,20 +93,26 @@ public class ModelEmployee {
     private String location;
     private Date date;
     private double salary;
-    private String description;
+    private String description = "";
     private ModelProfile profile;
     private ModelPositions positions;
     
      public Object[] toTableRow(int rowNum) {
         DateFormat df = new SimpleDateFormat("dd-MMMM-yyyy");
         NumberFormat nf = new DecimalFormat("$ #,##0.##");
-        return new Object[]{false, rowNum, this ,location,date == null ? "" : df.format(date), nf.format(salary), positions, description};
+        return new Object[]{false, rowNum, this ,date == null ? "" : df.format(date), nf.format(salary), positions, description};
     }
-
+    public Object[] toTableRowBasic(int row) {
+        DateFormat df = new SimpleDateFormat("dd-MMMM-yyyy");
+        NumberFormat nf = new DecimalFormat("$ #,##0.##");
+        return new Object[]{false, row, this, location,date == null ? "" : df.format(date), nf.format(salary), positions, description};
+    }
     @Override
     public String toString() {
         return name;
     }
+    
+
 }
 
 

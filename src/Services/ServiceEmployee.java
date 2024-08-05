@@ -1,7 +1,4 @@
-
 package Services;
-
-
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,6 +14,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import static jnafilechooser.api.JnaFileChooser.Mode.Files;
 import model.ModelPositions;
 import model.other.ModelProfile;
 import net.coobird.thumbnailator.Thumbnails;
@@ -29,7 +27,9 @@ public class ServiceEmployee {
         ResultSet r = null;
         try {
             con = DatabaseConnection.getInstance().createConnection();
-            p = con.prepareStatement("select * from employee join positions using (positions_id) order by positions_name, employee_name");
+            //p = con.prepareStatement("SELECT * FROM employee JOIN positions USING (positions_id) ORDER BY salary DESC");
+            p = con.prepareStatement("SELECT * FROM employee JOIN positions USING (positions_id) ORDER BY employee_id");
+            //p = con.prepareStatement("select * from employee join positions using (positions_id) order by positions_name, employee_name");
             r = p.executeQuery();
             List<ModelEmployee> list = new ArrayList<>();
             while (r.next()) {
@@ -55,7 +55,7 @@ public class ServiceEmployee {
         ResultSet r = null;
         try {
             con = DatabaseConnection.getInstance().createConnection();
-            p = con.prepareStatement("select * from employee join positions using (positions_id) where (positions_name like ? or employee_name like ? or description like ? or location like ?) order by positions_name, employee_name");
+            p = con.prepareStatement("select * from employee join positions using (positions_id) where (positions_name like ? or employee_name like ? or description like ? or location like ?) order by employee_id");
             p.setString(1, "%" + search + "%");
             p.setString(2, "%" + search + "%");
             p.setString(3, "%" + search + "%");
@@ -101,19 +101,64 @@ public class ServiceEmployee {
             p.setString(2, data.getLocation());
             p.setDate(3, data.getDate());
             p.setDouble(4, data.getSalary());
+            
             p.setString(5, data.getDescription());
+            if (data.getDescription() != null) {
+            p.setString(5, data.getDescription());
+            } else {
+            p.setString(5, "");
+            }
+            
             p.setInt(6, data.getPositions().getPositionsId());
+            
             if(data.getProfile() != null){
                 p.setBytes(7,getByteImage(data.getProfile().getPath())); 
             }else {
-                p.setBytes(8, null);
+                p.setBytes(7, null);
             }
             p.execute();
         } finally {
             DatabaseConnection.getInstance().close(p, con);
         }
     }
-     public void edit(ModelEmployee data) throws SQLException, IOException{
+    public void edit(ModelEmployee data) throws SQLException, IOException {
+    Connection con = null;
+    PreparedStatement p = null;
+    try {
+        boolean isEditProfile = data.getProfile() == null || data.getProfile().getPath() != null;
+        String sql = isEditProfile ? "UPDATE employee SET employee_name=?, location=?, date=?, salary=?, description=?, positions_id=?, profile=? WHERE employee_id=? LIMIT 1"
+                                   : "UPDATE employee SET employee_name=?, location=?, date=?, salary=?, description=?, positions_id=? WHERE employee_id=? LIMIT 1";
+
+        con = DatabaseConnection.getInstance().createConnection();
+        p = con.prepareStatement(sql);
+
+        p.setString(1, data.getName());
+        p.setString(2, data.getLocation());
+        p.setDate(3, data.getDate());
+        p.setDouble(4, data.getSalary());
+        p.setString(5, data.getDescription());
+        p.setInt(6, data.getPositions().getPositionsId());
+
+        if (isEditProfile) {
+            if (data.getProfile() != null && data.getProfile().getPath() != null) {
+                p.setBytes(7, getByteImage(data.getProfile().getPath()));
+            } else {
+                p.setBytes(7, null);
+            }
+            p.setInt(8, data.getEmployeeId());
+        } else {
+            p.setInt(7, data.getEmployeeId());
+        }
+
+        p.executeUpdate();
+    } finally {
+        DatabaseConnection.getInstance().close(p, con);
+    }
+}
+
+
+
+     /*public void edit(ModelEmployee data) throws SQLException, IOException{
         Connection con = null;
         PreparedStatement p = null;
         try {
@@ -144,7 +189,7 @@ public class ServiceEmployee {
         } finally {
             DatabaseConnection.getInstance().close(p, con);
         }
-    }
+    } */
 
     public ServicePositions getServicePositions() {
         if (servicePositions == null) {

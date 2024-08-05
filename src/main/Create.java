@@ -14,7 +14,6 @@ import javax.swing.SwingUtilities;
 import jnafilechooser.api.JnaFileChooser;
 import model.ModelEmployee;
 import model.ModelPositions;
-//import model.other.ModelProfile;
 import Services.ServiceEmployee;
 import model.other.ModelProfile;
 
@@ -270,7 +269,7 @@ public class Create extends javax.swing.JPanel {
         String name = txtName.getText().trim();
         String location = txtLocation.getText().trim();
         Date date = datePicker.isDateSelected() ? Date.valueOf(datePicker.getSelectedDate()) : null;
-        double salary = Double.parseDouble(txtSalary.getValue().toString());
+        double salary = Double.parseDouble(txtSalary.getValue().toString()); //erore
         String description = txtDescription.getText().trim();
         ModelPositions positions = (ModelPositions) comboPosition.getSelectedItem();
         return new ModelEmployee(0, name, location, date, salary, description, profile, positions);

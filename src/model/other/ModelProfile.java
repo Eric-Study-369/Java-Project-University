@@ -32,14 +32,18 @@ public class ModelProfile {
             icon = new ImageIcon(bytes);
         }
     }
-
+    
     public ModelProfile(Icon icon) {
         this.icon = icon;
+        
     }
+   
 
     private Icon icon;
     private Icon avatar;
     private File path;
+   
+    
 
     public Icon getAvatarIcon() {
         if (icon == null) {
