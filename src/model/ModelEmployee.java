@@ -100,13 +100,13 @@ public class ModelEmployee {
      public Object[] toTableRow(int rowNum) {
         DateFormat df = new SimpleDateFormat("dd-MMMM-yyyy");
         NumberFormat nf = new DecimalFormat("$ #,##0.##");
-        return new Object[]{false, rowNum, this ,location,date == null ? "" : df.format(date), nf.format(salary), positions, description};
+        return new Object[]{false, rowNum, this ,date == null ? "" : df.format(date), nf.format(salary), positions, description};
     }
-
     @Override
     public String toString() {
         return name;
     }
+    
 }
 
 
